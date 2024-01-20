@@ -159,68 +159,38 @@
                                     <td>$15</td>
                                     <td><label><input type="checkbox" name="ingrediente" value="15"></label></td>
                                 </tr>
-                                <tr>
-                                    <td>Jamón</td>
-                                    <td>$15</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="15"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Pierna</td>
-                                    <td>$15</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="15"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Chorizo</td>
-                                    <td>$20</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="20"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Tocino</td>
-                                    <td>$15</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="15"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Carne Molida</td>
-                                    <td>$20</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="20"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Pollo</td>
-                                    <td>$15</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="15"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Pimientos</td>
-                                    <td>$10</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="10"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Queso Mozzarella</td>
-                                    <td>$18</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="18"></label></td>
-                                </tr>
-                                <tr>
-                                    <td>Piña</td>
-                                    <td>$10</td>
-                                    <td><label><input type="checkbox" name="ingrediente" value="10"></label></td>
-                                </tr>
+                                <!-- Agrega más filas según tus ingredientes -->
                             </table>
                         </form>
                     </div>
                 </div>
+                <footer class="espingredientes">
+                    <h3 style="text-align: center;"> Especialidades: Algun Ingrediente Especial para tu pizza </h3>
+                    <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+                        <div>
+                            <img src="ruta/a/la/imagen1.jpg" alt="Ingrediente 1" style="width: 100px; height: 100px;">
+                            <p style="text-align: center;">$10</p>
+                            <label><input type="checkbox" name="ingrediente_especial" value="10"></label>
+                        </div>
+                        <div>
+                            <img src="ruta/a/la/imagen2.jpg" alt="Ingrediente 2" style="width: 100px; height: 100px;">
+                            <p style="text-align: center;">$15</p>
+                            <label><input type="checkbox" name="ingrediente_especial" value="15"></label>
+                        </div>
+                        <!-- Agrega más bloques según tus ingredientes especiales -->
+                    </div>
+                </footer>
+            </div>
+            <div id="precioTotal" style="text-align: center; margin-top: 20px; font-size: 20px; color: white;"></div>
+            <div style="text-align: right; padding: 10px; position: absolute; top: 0; right: 0; background-color: #333; color: white;">
+                <!-- Botones de Mandar Pedido y Borrar Pedido -->
+                <button onclick="mandarPedido()">Mandar Pedido</button>
+                <button onclick="borrarPedido()">Borrar Pedido</button>
             </div>
         </div>
-        <div style="text-align: center; margin-top: 20px;">
-            <button onclick="mandarPedido()">Mandar Pedido</button>
-            <button onclick="borrarPedido()">Borrar Pedido</button>
-        </div>
-
-        <!-- Sección para mostrar el precio total -->
-        <div id="precioTotal" style="text-align: center; margin-top: 20px; font-size: 20px; color: white;"></div>
-
     </section>
 
-    <!-- Script para gestionar la lógica de actualización del precio y los botones -->
+    <!-- Script para gestionar la lógica de actualización del precio -->
     <script>
         // Función para actualizar el precio total
         function actualizarPrecioTotal() {
@@ -231,6 +201,9 @@
             
             // Obtener los valores seleccionados de los ingredientes extra
             var ingredientes = document.querySelectorAll('input[name="ingrediente"]:checked');
+
+            // Obtener los valores seleccionados de los ingredientes especiales
+            var ingredientesEspeciales = document.querySelectorAll('input[name="ingrediente_especial"]:checked');
             
             // Calcular el precio total
             var precioTotal = 0;
@@ -255,30 +228,36 @@
                 precioTotal += parseFloat(ingrediente.value);
             });
 
+            // Calcular precio según los ingredientes especiales seleccionados
+            ingredientesEspeciales.forEach(function(ingredienteEspecial) {
+                precioTotal += parseFloat(ingredienteEspecial.value);
+            });
+
             // Mostrar el precio total actualizado
             document.getElementById('precioTotal').innerHTML = "Precio Total: $" + precioTotal.toFixed(2);
         }
 
         // Función para mandar el pedido
         function mandarPedido() {
-            // Puedes redirigir al usuario a una página de "Pedido Enviado"
-            window.location.href = "pedido_enviado.html";
+            // Aquí puedes redirigir al usuario a otra página o mostrar un mensaje de pedido enviado
+            alert("¡Pedido Enviado!");
         }
 
         // Función para borrar el pedido
         function borrarPedido() {
-            // Resetea las selecciones del usuario
-            document.querySelectorAll('input[type="radio"]:checked, input[type="checkbox"]:checked').forEach(function (input) {
-                input.checked = false;
+            // Limpiar selecciones y precio total
+            var opciones = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
+            opciones.forEach(function(opcion) {
+                opcion.checked = false;
             });
 
-            // Actualiza el precio total a cero
-            document.getElementById('precioTotal').innerHTML = "Precio Total: $0.00";
+            // Actualizar el precio total después de borrar
+            actualizarPrecioTotal();
         }
 
         // Agregar event listeners para los cambios en las opciones
         var opciones = document.querySelectorAll('input[type="radio"], input[type="checkbox"]');
-        opciones.forEach(function (opcion) {
+        opciones.forEach(function(opcion) {
             opcion.addEventListener('change', actualizarPrecioTotal);
         });
     </script>
